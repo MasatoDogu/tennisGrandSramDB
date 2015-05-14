@@ -1,0 +1,8 @@
+GENERATE HTML {
+   [
+      link(
+         (asc1)p.name, file="player.ssql", att=p.id1 
+      )
+   ]!
+}
+FROM player p;

@@ -1,0 +1,15 @@
+FOREACH p.id1
+GENERATE HTML {
+   {
+      image( p.image, path="./player/"),{
+        p.name! c.name! {
+            p.height, p.hand
+        }
+      }
+   }!
+   [
+        pm.kind, m.name
+   ]!
+}
+FROM player p, playmaker pm, maker m, country c
+WHERE pm.player = p.id1 AND pm.maker = m.id AND p.country = c.id;

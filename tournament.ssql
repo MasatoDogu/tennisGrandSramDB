@@ -1,0 +1,23 @@
+FOREACH t.id
+GENERATE HTML{
+	[
+		ty.year,
+		{
+			{
+				"1st", link(fs.name, file="fsplayer.ssql", att=p.id1)
+			}!
+			{
+				"2nd", link(s.name, file="splayer.ssql", att=p.id1)
+			}!
+			{[
+				"3rd", link(tr.name, file="trplayer.ssql", att=p.id1)
+			]!}!
+			[
+				"5th", link(ft.name, file="thplayer.ssql", att=p.id1)
+			]!
+		}
+	]!
+}
+
+FROM tournament t, tournamentyear ty, first fs, second s, third tr, fifth ft, player p
+WHERE t.id = fs.id AND t.id = s.id AND t.id = tr.id AND t.id = ft.id AND t.id = ty.id AND ty.year = fs.year AND ty.year = s.year AND ty.year = tr.year AND ty.year = ft.year AND fs.name = p.name AND s.name = p.name AND tr.name = p.name AND ft.name = p.name;

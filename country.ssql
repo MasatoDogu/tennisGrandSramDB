@@ -1,0 +1,10 @@
+GENERATE HTML{
+	[
+		c.name,
+		[
+			link( p.name, file="player.ssql", att = p.id1)
+		]!
+	]!
+}
+FROM country c, player p
+WHERE c.id = p.country;

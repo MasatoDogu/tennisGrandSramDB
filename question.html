@@ -1,0 +1,110 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset = utf-8">
+		<title>super sql question</title>
+	</head>
+
+	<body background="wallpaper.jpg">
+	<font size="5" color="white">
+		<h4>player.index.ssql</h4>
+		<h5>選手の索引。リンクで選手の詳細情報に飛ぶ。</h5><br>
+		<pre>
+GENERATE HTML {
+   [
+      link(
+         (asc1)p.name, file="player.ssql", att=p.id1 
+      )
+   ]!
+}
+FROM player p;
+		</pre>
+<br>
+<br>
+<br>
+		<h4>player.ssql</h4>
+		<h5>選手のid毎に、詳細情報をFOREACHで作成した。</h5><br>
+		<pre>
+FOREACH p.id1
+GENERATE HTML {
+   {
+      image( p.image, path="./player/"),{
+        p.name! c.name! {
+            p.height, p.hand
+        }
+      }
+   }!
+   [
+        pm.kind, m.name
+   ]!
+}
+FROM player p, playmaker pm, maker m, country c
+WHERE pm.player = p.id1 AND pm.maker = m.id AND p.country = c.id;
+		</pre>
+	<br>
+	<br>
+	<br>
+	<h4>tournament.index.ssql</h4>
+	<h5>大会の索引。リンクで大会の詳細情報に飛ぶ。</h5><br>
+	<pre>
+GENERATE HTML{
+	[
+        link( t.name, file="tournament1.ssql", att = t.id)
+	]!
+}
+FROM tournament t;
+	</pre>
+
+	<br>
+	<br>
+	<br>
+
+	<h4>tournament1.ssql</h4>
+	<h5>大会の年度ごとの結果。ベスト8の選手まで表示</h5><br>
+	<pre>
+FOREACH t.id
+GENERATE HTML{
+  [
+    ty.year,
+    {
+      {
+        "1st", fs.name
+      }!
+      {
+        "2nd", s.name
+      }!
+      {[
+        "3rd", tr.name 
+      ]!}!
+      [
+        "5th", ft.name
+      ]!
+    }
+  ]!
+}
+
+FROM tournament t, tournamentyear ty, first fs, second s, third tr, fifth ft, player p
+WHERE t.id = fs.id AND t.id = s.id AND t.id = tr.id AND t.id = ft.id AND t.id = ty.id AND ty.year = fs.year AND ty.year = s.year AND ty.year = tr.year AND ty.year = ft.year;
+	</pre>
+<br>
+<br>
+<br>
+	<h4>country.ssql</h4>
+	<h5>国ごとの選手索引。リンクで選手の詳細情報に飛ぶ。</h5><br>
+	<pre>
+GENERATE HTML{
+	[
+		c.name,
+		[
+			link( p.name, file="player.ssql", att = p.id1)
+		]!
+	]!
+}
+FROM country c, player p
+WHERE c.id = p.country;
+	</pre>
+<br>
+<br>
+<br>
+	</font>
+	</body>
+</html>

@@ -1,0 +1,23 @@
+FOREACH t.id
+GENERATE HTML{
+  [
+    ty.year,
+    {
+      {
+        "1st", fs.name
+      }!
+      {
+        "2nd", s.name
+      }!
+      {[
+        "3rd", tr.name 
+      ]!}!
+      [
+        "5th", ft.name
+      ]!
+    }
+  ]!
+}
+
+FROM tournament t, tournamentyear ty, first fs, second s, third tr, fifth ft, player p
+WHERE t.id = fs.id AND t.id = s.id AND t.id = tr.id AND t.id = ft.id AND t.id = ty.id AND ty.year = fs.year AND ty.year = s.year AND ty.year = tr.year AND ty.year = ft.year;

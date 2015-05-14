@@ -1,0 +1,6 @@
+GENERATE HTML{
+	[
+        link( t.name, file="tournament1.ssql", att = t.id)
+	]!
+}
+FROM tournament t;
